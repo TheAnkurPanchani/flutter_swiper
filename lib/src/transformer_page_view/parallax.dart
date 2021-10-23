@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:card_swiper/src/transformer_page_view/transformer_page_view.dart';
+import 'transformer_page_view.dart';
 
 typedef PaintCallback = Function(Canvas canvas, Size size);
 
@@ -12,7 +12,7 @@ class ColorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var index = info.fromIndex!;
+    var index = info.fromIndex;
     _paint.color = colors[index];
     canvas.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), _paint);
     if (info.done!) {

@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:example/src/ExampleCustom.dart';
 import 'package:example/src/ExampleSwiperInScrollView.dart';
 import 'package:example/src/config.dart';
@@ -6,11 +7,20 @@ import 'package:card_swiper/card_swiper.dart';
 
 void main() => runApp(MyApp());
 
+class MyScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyScrollBehavior(),
       title: 'Flutter Demo',
       theme: ThemeData.light(),
       home: MyHomePage(title: 'Flutter Swiper'),
@@ -45,10 +55,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> render(BuildContext context, List children) {
     return ListTile.divideTiles(
-        context: context,
-        tiles: children.map((dynamic data) {
-          return buildListTile(context, data[0], data[1], data[2]);
-        })).toList();
+      context: context,
+      tiles: children.map((dynamic data) {
+        return buildListTile(context, data[0], data[1], data[2]);
+      }),
+    ).toList();
   }
 
   Widget buildListTile(
@@ -107,8 +118,9 @@ class ExampleHorizontal extends StatelessWidget {
       ),
       body: Swiper(
         itemBuilder: (BuildContext context, int index) {
+          final image = images[index];
           return Image.asset(
-            images[index],
+            image,
             fit: BoxFit.fill,
           );
         },
@@ -215,7 +227,7 @@ class ExampleCustomPagination extends StatelessWidget {
                           color: Colors.white,
                           child: config != null
                               ? Text(
-                                  "${titles[config.activeIndex!]} ${config.activeIndex! + 1}/${config.itemCount}",
+                                  "${titles[config.activeIndex]} ${config.activeIndex + 1}/${config.itemCount}",
                                   style: TextStyle(fontSize: 20.0),
                                 )
                               : Offstage(),
@@ -239,15 +251,14 @@ class ExampleCustomPagination extends StatelessWidget {
                 pagination: SwiperPagination(
                     margin: EdgeInsets.all(0.0),
                     builder: SwiperCustomPagination(builder:
-                        (BuildContext context, SwiperPluginConfig? config) {
+                        (BuildContext context, SwiperPluginConfig config) {
                       return ConstrainedBox(
                         child: Row(
                           children: <Widget>[
-                            if (config != null)
-                              Text(
-                                "${titles[config.activeIndex!]} ${config.activeIndex! + 1}/${config.itemCount}",
-                                style: TextStyle(fontSize: 20.0),
-                              ),
+                            Text(
+                              "${titles[config.activeIndex]} ${config.activeIndex + 1}/${config.itemCount}",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
                             Expanded(
                               child: Align(
                                 alignment: Alignment.centerRight,

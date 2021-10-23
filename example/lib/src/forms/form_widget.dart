@@ -33,8 +33,8 @@ class FormWidget extends StatelessWidget {
 class FormSelect<T> extends StatefulWidget {
   final String placeholder;
   final ValueChanged<T> valueChanged;
-  final List<Object> values;
-  final Object value;
+  final List<T> values;
+  final T value;
 
   FormSelect({
     required this.placeholder,
@@ -45,11 +45,11 @@ class FormSelect<T> extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _FormSelectState();
+    return _FormSelectState<T>();
   }
 }
 
-class _FormSelectState extends State<FormSelect> {
+class _FormSelectState<T> extends State<FormSelect<T>> {
   int _selectedIndex = 0;
 
   @override
@@ -67,7 +67,7 @@ class _FormSelectState extends State<FormSelect> {
   @override
   Widget build(BuildContext context) {
     String placeholder = widget.placeholder;
-    List<Object> values = widget.values;
+    List<T> values = widget.values;
 
     return Container(
       child: InkWell(
@@ -88,7 +88,7 @@ class _FormSelectState extends State<FormSelect> {
                         height: values.length * 30.0 + 70.0,
                         child: CupertinoPicker(
                           itemExtent: 30.0,
-                          children: values.map((Object value) {
+                          children: values.map((value) {
                             return Text(value.toString());
                           }).toList(),
                           onSelectedItemChanged: (int index) {
