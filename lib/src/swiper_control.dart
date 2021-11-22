@@ -22,12 +22,15 @@ class SwiperControl extends SwiperPlugin {
 
   final Key? key;
 
+  final bool? showArrowIndicator;
+
   const SwiperControl({
     this.iconPrevious = Icons.arrow_back_ios,
     this.iconNext = Icons.arrow_forward_ios,
     this.color,
     this.disableColor,
     this.key,
+    this.showArrowIndicator = true,
     this.size = 30.0,
     this.padding = const EdgeInsets.all(5.0),
   });
@@ -80,8 +83,10 @@ class SwiperControl extends SwiperPlugin {
         key: key,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          buildButton(config, prevColor, iconPrevious, 0, true),
-          buildButton(config, nextColor, iconNext, 0, false)
+          if (showArrowIndicator ?? false)
+            buildButton(config, prevColor, iconPrevious, 0, true),
+          if (showArrowIndicator ?? false)
+            buildButton(config, nextColor, iconNext, 0, false)
         ],
       );
     } else {
@@ -89,8 +94,10 @@ class SwiperControl extends SwiperPlugin {
         key: key,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          buildButton(config, prevColor, iconPrevious, -3, true),
-          buildButton(config, nextColor, iconNext, -3, false)
+          if (showArrowIndicator ?? false)
+            buildButton(config, prevColor, iconPrevious, -3, true),
+          if (showArrowIndicator ?? false)
+            buildButton(config, nextColor, iconNext, -3, false)
         ],
       );
     }
