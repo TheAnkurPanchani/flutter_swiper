@@ -558,7 +558,7 @@ class _TransformerPageViewState extends State<TransformerPageView> {
     int index;
     if (event == null) return;
     if (event is MoveIndexControllerEvent) {
-      index = _pageController.getRealIndexFromRenderIndex(controller.index);
+      index = _pageController.getRealIndexFromRenderIndex(event.newIndex);
     } else if (event is StepBasedIndexControllerEvent) {
       index = event.calcNextIndex(
         currentIndex: _activeIndex,

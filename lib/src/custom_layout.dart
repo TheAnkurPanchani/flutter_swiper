@@ -165,8 +165,19 @@ abstract class _CustomLayoutStateBase<T extends _SubSwiper> extends State<T>
     }
   }
 
+  int _getProperNewIndex(int newIndex) {
+    var res = newIndex;
+    if (!widget.loop && newIndex >= widget.itemCount - 1) {
+      res = widget.itemCount - 1;
+    } else if (!widget.loop && newIndex < 0) {
+      res = 0;
+    }
+    return res;
+  }
+
   void _onController() {
-    final event = widget.controller.event;
+    final controller = widget.controller;
+    final event = controller.event;
     if (event is StepBasedIndexControllerEvent) {
       final newIndex = event.calcNextIndex(
         currentIndex: _currentIndex,
@@ -175,6 +186,11 @@ abstract class _CustomLayoutStateBase<T extends _SubSwiper> extends State<T>
         reverse: false,
       );
       _move(event.targetPosition, nextIndex: newIndex);
+    } else if (event is MoveIndexControllerEvent) {
+      _move(
+        event.targetPosition,
+        nextIndex: _getProperNewIndex(event.newIndex),
+      );
     }
   }
 

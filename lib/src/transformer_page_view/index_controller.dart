@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 abstract class IndexControllerEventBase {
   final bool animation;
+
   final completer = Completer<void>();
   Future<void> get future => completer.future;
   void complete() {
@@ -18,9 +19,11 @@ abstract class IndexControllerEventBase {
   });
 }
 
-mixin StepBasedIndexControllerEvent on IndexControllerEventBase {
-  int get step;
+mixin TargetedPositionControllerEvent on IndexControllerEventBase {
   double get targetPosition;
+}
+mixin StepBasedIndexControllerEvent on TargetedPositionControllerEvent {
+  int get step;
   int calcNextIndex({
     required int currentIndex,
     required int itemCount,
@@ -46,7 +49,7 @@ mixin StepBasedIndexControllerEvent on IndexControllerEventBase {
 }
 
 class NextIndexControllerEvent extends IndexControllerEventBase
-    with StepBasedIndexControllerEvent {
+    with TargetedPositionControllerEvent, StepBasedIndexControllerEvent {
   NextIndexControllerEvent({
     required bool animation,
   }) : super(
@@ -61,7 +64,7 @@ class NextIndexControllerEvent extends IndexControllerEventBase
 }
 
 class PrevIndexControllerEvent extends IndexControllerEventBase
-    with StepBasedIndexControllerEvent {
+    with TargetedPositionControllerEvent, StepBasedIndexControllerEvent {
   PrevIndexControllerEvent({
     required bool animation,
   }) : super(
@@ -74,12 +77,19 @@ class PrevIndexControllerEvent extends IndexControllerEventBase
   double get targetPosition => 0;
 }
 
-class MoveIndexControllerEvent extends IndexControllerEventBase {
+class MoveIndexControllerEvent extends IndexControllerEventBase
+    with TargetedPositionControllerEvent {
+  final int newIndex;
+  final int oldIndex;
   MoveIndexControllerEvent({
+    required this.newIndex,
+    required this.oldIndex,
     required bool animation,
   }) : super(
           animation: animation,
         );
+  @override
+  double get targetPosition => newIndex > oldIndex ? 1 : 0;
 }
 
 class IndexController extends ChangeNotifier {
@@ -88,8 +98,9 @@ class IndexController extends ChangeNotifier {
   Future move(int index, {bool animation = true}) {
     final e = event = MoveIndexControllerEvent(
       animation: animation,
+      newIndex: index,
+      oldIndex: this.index,
     );
-    this.index = index;
     notifyListeners();
     return e.future;
   }
