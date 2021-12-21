@@ -1,9 +1,9 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:card_swiper/card_swiper.dart';
 
 void main() {
-  testWidgets('Control horizontal', (WidgetTester tester) async {
+  testWidgets('Control horizontal', (tester) async {
     final controller = SwiperController();
 
     final config = SwiperPluginConfig(
@@ -14,9 +14,9 @@ void main() {
       scrollDirection: Axis.horizontal,
     );
 
-    Key key = UniqueKey();
+    final key = UniqueKey();
     await tester.pumpWidget(MaterialApp(
-      home: Scaffold(body: Builder(builder: (BuildContext context) {
+      home: Scaffold(body: Builder(builder: (context) {
         return SwiperControl(key: key).build(context, config);
       })),
     ));
@@ -25,7 +25,7 @@ void main() {
 
     var first = true;
 
-    await tester.tap(find.byWidgetPredicate((Widget widget) {
+    await tester.tap(find.byWidgetPredicate((widget) {
       if (widget is GestureDetector && first) {
         first = false;
         return true;
@@ -35,7 +35,7 @@ void main() {
     }));
   });
 
-  testWidgets('Control vertical', (WidgetTester tester) async {
+  testWidgets('Control vertical', (tester) async {
     final controller = SwiperController();
 
     final config = SwiperPluginConfig(
@@ -45,9 +45,9 @@ void main() {
         loop: true,
         scrollDirection: Axis.vertical);
 
-    Key key = UniqueKey();
+    final Key key = UniqueKey();
     await tester.pumpWidget(MaterialApp(
-      home: Scaffold(body: Builder(builder: (BuildContext context) {
+      home: Scaffold(body: Builder(builder: (context) {
         return SwiperControl(
                 key: key, color: Colors.white, disableColor: Colors.black87)
             .build(context, config);
@@ -58,7 +58,7 @@ void main() {
 
     var first = true;
 
-    await tester.tap(find.byWidgetPredicate((Widget widget) {
+    await tester.tap(find.byWidgetPredicate((widget) {
       if (widget is GestureDetector && first) {
         first = false;
         return true;

@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter/material.dart';
+
 import 'config.dart';
 import 'forms/form_widget.dart';
 
 class ExampleCustom extends StatefulWidget {
+  const ExampleCustom({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _ExampleCustomState();
@@ -64,9 +67,9 @@ class _ExampleCustomState extends State<ExampleCustom> {
       ..addRotate([-45.0 / 180, 0.0, 45.0 / 180])
       ..addTranslate(
         [
-          Offset(-370.0, -40.0),
-          Offset(0.0, 0.0),
-          Offset(370.0, -40.0),
+          const Offset(-370.0, -40.0),
+          Offset.zero,
+          const Offset(370.0, -40.0),
         ],
       );
     super.didUpdateWidget(oldWidget);
@@ -78,9 +81,9 @@ class _ExampleCustomState extends State<ExampleCustom> {
       ..addRotate([-25.0 / 180, 0.0, 25.0 / 180])
       ..addTranslate(
         [
-          Offset(-350.0, 0.0),
-          Offset(0.0, 0.0),
-          Offset(350.0, 0.0),
+          const Offset(-350.0, 0.0),
+          Offset.zero,
+          const Offset(350.0, 0.0),
         ],
       );
     _fade = 1.0;
@@ -106,12 +109,12 @@ class _ExampleCustomState extends State<ExampleCustom> {
 
   Widget buildSwiper() {
     return Swiper(
-      onTap: (int index) {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) {
+      onTap: (index) {
+        Navigator.of(context).push(MaterialPageRoute<Object>(
+          builder: (context) {
             return Scaffold(
               appBar: AppBar(
-                title: Text('New page'),
+                title: const Text('New page'),
               ),
               body: Container(),
             );
@@ -121,7 +124,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
       customLayoutOption: customLayoutOption,
       fade: _fade,
       index: _currentIndex,
-      onIndexChanged: (int index) {
+      onIndexChanged: (index) {
         setState(() {
           _currentIndex = index;
         });
@@ -142,8 +145,8 @@ class _ExampleCustomState extends State<ExampleCustom> {
       scrollDirection: _scrollDirection,
       indicatorLayout: PageIndicatorLayout.COLOR,
       autoplayDisableOnInteraction: _autoplayDisableOnInteraction,
-      pagination: SwiperPagination(
-          builder: const DotSwiperPaginationBuilder(
+      pagination: const SwiperPagination(
+          builder: DotSwiperPaginationBuilder(
               size: 20.0, activeSize: 20.0, space: 10.0)),
     );
   }
@@ -170,13 +173,13 @@ class _ExampleCustomState extends State<ExampleCustom> {
                     onPressed: () {
                       _controller.previous(animation: true);
                     },
-                    child: Text('Prev'),
+                    child: const Text('Prev'),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       _controller.next(animation: true);
                     },
-                    child: Text('Next'),
+                    child: const Text('Next'),
                   ),
                   Expanded(
                       child: TextField(
@@ -184,12 +187,12 @@ class _ExampleCustomState extends State<ExampleCustom> {
                   )),
                   ElevatedButton(
                     onPressed: () {
-                      var text = numberController.text;
+                      final text = numberController.text;
                       setState(() {
                         _currentIndex = int.parse(text);
                       });
                     },
-                    child: Text('Update'),
+                    child: const Text('Update'),
                   ),
                 ],
               ),
@@ -198,13 +201,13 @@ class _ExampleCustomState extends State<ExampleCustom> {
                 child: FormSelect<SwiperLayout>(
                   placeholder: 'Select layout',
                   value: _layout,
-                  values: [
+                  values: const [
                     SwiperLayout.DEFAULT,
                     SwiperLayout.STACK,
                     SwiperLayout.TINDER,
                     SwiperLayout.CUSTOM
                   ],
-                  valueChanged: (SwiperLayout value) {
+                  valueChanged: (value) {
                     _layout = value;
                     setState(() {});
                   },
@@ -214,14 +217,14 @@ class _ExampleCustomState extends State<ExampleCustom> {
                 label: 'scrollDirection',
                 child: Switch(
                     value: _scrollDirection == Axis.horizontal,
-                    onChanged: (bool value) => setState(() => _scrollDirection =
+                    onChanged: (value) => setState(() => _scrollDirection =
                         value ? Axis.horizontal : Axis.vertical)),
               ),
               FormWidget(
                 label: 'autoplayDisableOnInteraction',
                 child: Switch(
                     value: _autoplayDisableOnInteraction,
-                    onChanged: (bool value) =>
+                    onChanged: (value) =>
                         setState(() => _autoplayDisableOnInteraction = value)),
               ),
               //Pannel Begin
@@ -229,21 +232,20 @@ class _ExampleCustomState extends State<ExampleCustom> {
                 label: 'loop',
                 child: Switch(
                     value: _loop,
-                    onChanged: (bool value) => setState(() => _loop = value)),
+                    onChanged: (value) => setState(() => _loop = value)),
               ),
               FormWidget(
                 label: 'outer',
                 child: Switch(
                     value: _outer,
-                    onChanged: (bool value) => setState(() => _outer = value)),
+                    onChanged: (value) => setState(() => _outer = value)),
               ),
               //Pannel Begin
               FormWidget(
                 label: 'autoplay',
                 child: Switch(
                     value: _autoplay,
-                    onChanged: (bool value) =>
-                        setState(() => _autoplay = value)),
+                    onChanged: (value) => setState(() => _autoplay = value)),
               ),
 
               FormWidget(
@@ -253,7 +255,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                   step: 5.0,
                   min: 0.0,
                   max: 30.0,
-                  onChangeValue: (num value) {
+                  onChangeValue: (value) {
                     _padding = value.toDouble();
                     setState(() {});
                   },
@@ -266,7 +268,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                   step: 0.1,
                   min: 0.0,
                   max: 1.0,
-                  onChangeValue: (num value) {
+                  onChangeValue: (value) {
                     _scale = value.toDouble();
                     setState(() {});
                   },
@@ -279,7 +281,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                   step: 0.1,
                   min: 0.0,
                   max: 1.0,
-                  onChangeValue: (num value) {
+                  onChangeValue: (value) {
                     _fade = value.toDouble();
                     setState(() {});
                   },
@@ -292,7 +294,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                   step: 1,
                   min: 0,
                   max: 100,
-                  onChangeValue: (num value) {
+                  onChangeValue: (value) {
                     _itemCount = value.toInt();
                     setState(() {});
                   },
@@ -306,8 +308,8 @@ class _ExampleCustomState extends State<ExampleCustom> {
                   step: 1.0,
                   min: 0.0,
                   max: 30.0,
-                  onChangeValue: (num value) {
-                    this._radius = value.toDouble();
+                  onChangeValue: (value) {
+                    _radius = value.toDouble();
                     setState(() {});
                   },
                 ),
@@ -320,7 +322,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                   step: 0.1,
                   max: 1.0,
                   min: 0.5,
-                  onChangeValue: (num value) {
+                  onChangeValue: (value) {
                     _viewportFraction = value.toDouble();
                     setState(() {});
                   },
@@ -332,7 +334,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                 child: FormSelect<Curve>(
                   placeholder: 'Select curve',
                   value: _curve,
-                  values: [
+                  values: const [
                     Curves.easeInOut,
                     Curves.ease,
                     Curves.bounceInOut,
@@ -340,7 +342,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                     Curves.bounceIn,
                     Curves.fastOutSlowIn
                   ],
-                  valueChanged: (Curve value) {
+                  valueChanged: (value) {
                     _curve = value;
                     setState(() {});
                   },
