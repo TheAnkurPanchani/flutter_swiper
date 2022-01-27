@@ -241,6 +241,8 @@ class TransformerPageView extends StatefulWidget {
   /// If not set, it is controlled by this widget.
   final int? index;
 
+  final bool allowImplicitScrolling;
+
   /// Creates a scrollable list that works page by page using widgets that are
   /// created on demand.
   ///
@@ -266,6 +268,7 @@ class TransformerPageView extends StatefulWidget {
     this.onPageChanged,
     this.controller,
     this.transformer,
+    this.allowImplicitScrolling = false,
     this.itemBuilder,
     this.pageController,
     required this.itemCount,
@@ -287,6 +290,7 @@ class TransformerPageView extends StatefulWidget {
     ValueChanged<int?>? onPageChanged,
     IndexController? controller,
     PageTransformer? transformer,
+    bool allowImplicitScrolling = false,
     required List<Widget> children,
     TransformerPageController? pageController,
   }) {
@@ -306,6 +310,7 @@ class TransformerPageView extends StatefulWidget {
       viewportFraction: viewportFraction,
       scrollDirection: scrollDirection,
       physics: physics,
+      allowImplicitScrolling: allowImplicitScrolling,
       onPageChanged: onPageChanged,
       controller: controller,
     );
@@ -418,6 +423,7 @@ class _TransformerPageViewState extends State<TransformerPageView> {
   Widget build(BuildContext context) {
     final builder = _transformer == null ? _buildItemNormal : _buildItem;
     final child = PageView.builder(
+      allowImplicitScrolling: widget.allowImplicitScrolling,
       itemBuilder: builder,
       itemCount: _pageController.getRealItemCount(),
       onPageChanged: _onIndexChanged,
